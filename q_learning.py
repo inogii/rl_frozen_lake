@@ -23,24 +23,26 @@ def q_learning(env, states, actions, episodes=5000, alpha=0.1, gamma=0.99, epsil
 
     for episode in range(episodes):
         state = env.reset()
-        state = np.asscalar(np.array(state))  # Convert state to integer if necessary
+        state = state if isinstance(state, int) else state[0]
         done = False
 
         while not done:
-            # Epsilon-greedy action selection
             if random.uniform(0, 1) < epsilon:
-                action = env.action_space.sample()  # Explore action space
+                action = env.action_space.sample()
             else:
-                action = np.argmax(Q[state])  # Exploit learned values
+                action = np.argmax(Q[state])
 
-            next_state, reward, done, _ = env.step(action)
-            next_state = np.asscalar(np.array(next_state))  # Convert next_state to integer
+            step_result = env.step(action)
+            # Assuming the first four values are next_state, reward, done, and info
+            next_state, reward, done, _ = step_result[:4]
+            next_state = next_state if isinstance(next_state, int) else next_state[0]
 
-            # Q-learning update
             Q[state, action] = Q[state, action] + alpha * (reward + gamma * np.max(Q[next_state]) - Q[state, action])
             state = next_state
 
     return Q
+
+
 
 
 # Main function
