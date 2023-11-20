@@ -8,7 +8,7 @@ FUNCIONES DE NUESTRO CÓDIGO
 - policy iteration: calcula con el algoritmo de iteración de valor la política óptima dado el entorno
     - policy_evaluation: evalúa la política
     - policy_improvement: mejora la política
-
+- extract_environment_dynamics: extrae los parámetros de un entorno env
 '''
 
 def value_iteration(states, actions, transition_probabilities, rewards, gamma=0.99, threshold=0.001):
