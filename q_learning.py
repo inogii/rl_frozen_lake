@@ -42,27 +42,31 @@ def q_learning(env, states, actions, episodes=5000, alpha=0.1, gamma=0.99, epsil
 
     return Q
 
-
-
-
 # Main function
 def main():
     # Setup environment
     desc = ["SFFF", "FHFH", "FFFH", "HFFG"]
-    env = gym.make('FrozenLake-v1', desc=desc, is_slippery=True, render_mode="human")
+    env = gym.make('FrozenLake-v1', desc=desc, is_slippery=True)
     states = list(range(env.observation_space.n))
     actions = list(range(env.action_space.n))
 
     # Train Q-learning model
-    Q = q_learning(env, states, actions)
+    Q = q_learning(env, states, actions, episodes=1000000)
 
     # Test the learned policy
     state = env.reset()
+    # Convert state to integer if it's not already
+    state = state if isinstance(state, int) else state[0]
     env.render()
     done = False
+    env = gym.make('FrozenLake-v1', desc=desc, is_slippery=True, render_mode='human')
+    env.reset()
     while not done:
         action = np.argmax(Q[state])
-        state, _, done, _ = env.step(action)
+        step_result = env.step(action)
+        state, _, done, _ = step_result[:4]
+        # Convert state to integer if it's not already
+        state = state if isinstance(state, int) else state[0]
         env.render()
 
     env.close()
