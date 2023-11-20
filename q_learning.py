@@ -51,7 +51,7 @@ def main():
     actions = list(range(env.action_space.n))
 
     # Train Q-learning model
-    Q = q_learning(env, states, actions, episodes=1000000)
+    Q = q_learning(env, states, actions, episodes=10000)
 
     # Test the learned policy
     state = env.reset()
